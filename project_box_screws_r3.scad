@@ -2,15 +2,15 @@
 
 //40mm x 60 board size
 
-inside_width = 45;
-inside_length = 70;
-inside_height = 25;
+inside_width = 78;
+inside_length = 50;
+inside_height = 35;
 //Wall thickness
 thickness = 2;                  
 //Fillet radius. This should not be larger than thickness.
 radius = 1;                     
 //Diameter of the holes that screws thread into. 
-screw_dia = 3;                  
+screw_dia = 2.5;                  
 //Diameter of the holes on the lid (should be larger than the diameter of your screws)
 screw_loose_dia = 3.2;
 //Only use this if the lip on your lid is detached from the lid! This is a hack to work around odd union() behaviour.
