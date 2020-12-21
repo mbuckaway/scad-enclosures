@@ -27,7 +27,7 @@ extra_lid_thickness = 0;        //Extra lid thickness above thickness.
 lid_screw_lip_size = 15;
 // The side of the box has a hole for the wifi antenna.
 // Set to zero to disable.
-antenna_holesize=8;
+antenna_holesize=7;
 antenna_offset=7;
 
 led_holesize=9.8;
