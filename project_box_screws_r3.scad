@@ -1,9 +1,9 @@
 $fn=50;
 //Procedural Project Box Screws
 
-box_enable = 1;
-top_enable = 0;
-fillets_enable = 1;
+box_enable = 0;
+top_enable = 1;
+fillets_enable = 0;
 
 //40mm x 60 board size
 
@@ -25,6 +25,7 @@ extra_lid_thickness = 0;        //Extra lid thickness above thickness.
 // The lid can have a lip on it for attached to another surface
 // This is the size of that lip
 lid_screw_lip_size = 15;
+lid_screw_lip_screw_size = 5;
 // The side of the box has a hole for the wifi antenna.
 // Set to zero to disable.
 antenna_holesize=7;
@@ -229,13 +230,13 @@ module lid(){
         {
             union() {
                 translate([10, lid_screw_lip_size-22, 0])
-                    cylinder(h = thickness * 4, d = screw_loose_dia, center=true, $fs=0.2);            
+                    cylinder(h = thickness * 4, d = lid_screw_lip_screw_size, center=true, $fs=0.2);            
                 translate([inside_width-od/2, lid_screw_lip_size-22, 0])
-                    cylinder(h = thickness * 4, d = screw_loose_dia, center=true, $fs=0.2);            
+                    cylinder(h = thickness * 4, d = lid_screw_lip_screw_size, center=true, $fs=0.2);            
                 translate([inside_width-od/2, inside_length+13, 0])
-                    cylinder(h = thickness * 4, d = screw_loose_dia, center=true, $fs=0.2);            
+                    cylinder(h = thickness * 4, d = lid_screw_lip_screw_size, center=true, $fs=0.2);            
                 translate([10, inside_length+13, 0])
-                    cylinder(h = thickness * 4, d = screw_loose_dia, center=true, $fs=0.2);            
+                    cylinder(h = thickness * 4, d = lid_screw_lip_screw_size, center=true, $fs=0.2);            
             }
         }
 
