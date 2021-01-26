@@ -4,21 +4,23 @@ $fn=50;
 // a power cable hole, and place to mount the ESP32 board. The top panel screws to the
 // base for security and provide mounting holes for the entire box.
 // The box provides holes for LEN lenses from Alliexpress: https://www.aliexpress.com/item/32978356485.html?spm=a2g0s.9042311.0.0.66e04c4dbgmVUf
-
-box_enable = 0;
+show = 0;
+box_enable = 1;
 top_enable = 0;
-ledmount_enable = 0;
+ledmount_enable = 1;
 fillets_enable = 1;
 fillets_esp_enable = 0;
 lightsensor_enable = 1;
-words_enable = 1;
+words_enable = 0;
 lensholder_enable = 1;
 
 //40mm x 60 board size
 
 inside_width = 70;
-inside_length = 165;
-inside_height = 60;
+//inside_length = 165;
+inside_length = 140;
+//inside_height = 60;
+inside_height = 0;
 //Wall thickness
 thickness = 3;  
 //Fillet radius. This should not be larger than thickness.
@@ -59,6 +61,7 @@ lensholder_length = 110;
 led_holder_offset = 15;
 lensholder_screw_offset = 28;
 lensholder_holesize = 21;
+lensholder_cutout_dia = 24;
 
 led_holesize=19.7;
 led_bezelsize=24;
@@ -84,28 +87,34 @@ screwmount_height_esp = screwmount_height+7;
 //screwmount_offset_esp_x = 14;
 //screwmount_offset_esp_y = 30;
 
+screwmount_length_lh = lensholder_length - 56;
+screwmount_width_lh = lensholder_width - 10;
+screwmount_height_lh = 4;
 
 outside_width = inside_width + thickness * 2;
 outside_length = inside_length + thickness * 2;
 od = screw_dia * 2.5;
 
-module screwmount(mount_height, mount_dia, raduis)
+module screwmount(mount_height, mount_dia, raduis, rounded)
 {
     difference() {
         cylinder(r=raduis, h=mount_height-2);
         translate([0,0,-1]) cylinder(r=mount_dia, h=mount_height);
     }
-    rotate_extrude(convexity = 10)
-        translate([2.5,0,0]) {
-            intersection()
-            {
-                square(5);
-                difference() {
-                    square(5, center=true);
-                    translate([2.5,2,5]) circle(2.0);
+    if (rounded)
+    {
+        rotate_extrude(convexity = 10)
+            translate([2.5,0,0]) {
+                intersection()
+                {
+                    square(5);
+                    difference() {
+                        square(5, center=true);
+                        translate([2.5,2,5]) circle(2.0);
+                    }
                 }
             }
-        }
+    }
 }
 
 module filletposts()
@@ -116,10 +125,10 @@ module filletposts()
     post2 = [0, postoffset_length, 0];
     post3 = [postoffset_width, 0, 0];
     post4 = [postoffset_width, postoffset_length, 0];
-    translate(post1) screwmount(screwmount_height, screwmount_screw_dia, 4);
-    translate(post2) screwmount(screwmount_height, screwmount_screw_dia, 4);
-    translate(post3) screwmount(screwmount_height, screwmount_screw_dia, 4);
-    translate(post4) screwmount(screwmount_height, screwmount_screw_dia, 4);
+    translate(post1) screwmount(screwmount_height, screwmount_screw_dia, 4, 1);
+    translate(post2) screwmount(screwmount_height, screwmount_screw_dia, 4, 1);
+    translate(post3) screwmount(screwmount_height, screwmount_screw_dia, 4, 1);
+    translate(post4) screwmount(screwmount_height, screwmount_screw_dia, 4, 1);
 }
 
 module filletpostsesp()
@@ -130,10 +139,24 @@ module filletpostsesp()
     post2 = [0, postoffset_length, 0];
     post3 = [postoffset_width, 0, 0];
     post4 = [postoffset_width, postoffset_length, 0];
-    translate(post1) screwmount(screwmount_height_esp, screwmount_screw_dia, 4);
-    translate(post2) screwmount(screwmount_height_esp, screwmount_screw_dia, 4);
-    translate(post3) screwmount(screwmount_height_esp, screwmount_screw_dia, 4);
-    translate(post4) screwmount(screwmount_height_esp, screwmount_screw_dia, 4);
+    translate(post1) screwmount(screwmount_height_esp, screwmount_screw_dia, 4, 1);
+    translate(post2) screwmount(screwmount_height_esp, screwmount_screw_dia, 4, 1);
+    translate(post3) screwmount(screwmount_height_esp, screwmount_screw_dia, 4, 1);
+    translate(post4) screwmount(screwmount_height_esp, screwmount_screw_dia, 4, 1);
+}
+
+module filletpostslensholder()
+{
+    postoffset_length = screwmount_length_lh;
+    postoffset_width = screwmount_width_lh;
+    post1 = [0, 0, 0];
+    post2 = [0, postoffset_length, 0];
+    post3 = [postoffset_width, 0, 0];
+    post4 = [postoffset_width, postoffset_length, 0];
+    translate(post1) screwmount(screwmount_height_lh, screwmount_screw_dia, 3, 0);
+    translate(post2) screwmount(screwmount_height_lh, screwmount_screw_dia, 3, 0);
+    translate(post3) screwmount(screwmount_height_lh, screwmount_screw_dia, 3, 0);
+    translate(post4) screwmount(screwmount_height_lh, screwmount_screw_dia, 3, 0);
 }
 
 module box_screw(id, od, height){
@@ -229,7 +252,8 @@ module main_box(){
     }
 
     translate([inside_width/2-11,led_offset-10, thickness]) filletposts();
-    translate([inside_width/2-18,led_offset-22, thickness]) filletpostsesp();    
+    //translate([inside_width/2-18,led_offset-22, thickness]) filletpostsesp();
+    translate([inside_width/2-11,led_offset+13, thickness]) filletpostslensholder();
 
     od = screw_dia * 2.5;
     
@@ -335,10 +359,10 @@ module ledmount(){
     // Screw posts
     for (i = [0:3])
     {
-        post1 = [ledmount_width/2-ledmount_distance/2, ledmount_spacing*i+14, ledmount_thickness];
-        post2 = [ledmount_width/2+ledmount_distance/2, ledmount_spacing*i+14, ledmount_thickness];
-        translate(post1) screwmount(ledmount_screwmount_height, screwmount_screw_dia, 3);
-        translate(post2) screwmount(ledmount_screwmount_height, screwmount_screw_dia, 3);
+        post1 = [ledmount_width/2-ledmount_distance/2-.5, ledmount_spacing*i+15, ledmount_thickness];
+        post2 = [ledmount_width/2+ledmount_distance/2-.5, ledmount_spacing*i+15, ledmount_thickness];
+        translate(post1) screwmount(ledmount_screwmount_height, screwmount_screw_dia, 3, 1);
+        translate(post2) screwmount(ledmount_screwmount_height, screwmount_screw_dia, 3, 1);
     }
 }
 
@@ -360,13 +384,13 @@ module lensholder(){
 
         // Corner cutout
         translate([0, 0, 1])
-            cylinder(h = lensholder_thickness * 2, d = 23, center=true, $fs=0.2);            
+            cylinder(h = lensholder_thickness * 2, d = lensholder_cutout_dia, center=true, $fs=0.2);            
         translate([lensholder_width, 0, 1])
-            cylinder(h = lensholder_thickness * 2, d = 23, center=true, $fs=0.2);            
+            cylinder(h = lensholder_thickness * 2, d = lensholder_cutout_dia, center=true, $fs=0.2);            
         translate([lensholder_width, lensholder_length, 1])
-            cylinder(h = lensholder_thickness * 2, d = 23, center=true, $fs=0.2);            
+            cylinder(h = lensholder_thickness * 2, d = lensholder_cutout_dia, center=true, $fs=0.2);            
         translate([0, lensholder_length, 1])
-            cylinder(h = lensholder_thickness * 2, d = 23, center=true, $fs=0.2);            
+            cylinder(h = lensholder_thickness * 2, d = lensholder_cutout_dia, center=true, $fs=0.2);            
 
         // LED LEN holes
         translate([lensholder_width/2,led_holder_offset,thickness-1])
@@ -384,5 +408,8 @@ module lensholder(){
 if (box_enable) main_box();
 if (top_enable) translate([-outside_width-5,0,0]) lid();
 //if (ledmount_enable) translate([-outside_width*1.75,0,0]) ledmount();
-if (ledmount_enable) translate([-50,0,0]) ledmount();
-if (lensholder_enable) translate([-100, 0, 0]) lensholder();
+if (ledmount_enable && !show) translate([-50,0,0]) ledmount();
+//if (ledmount_enable && show) translate([19,30,0]) ledmount();
+if (ledmount_enable && show) translate([19,30,screwmount_height_esp-6]) ledmount();
+if (lensholder_enable && !show) translate([-100, 0, 0]) lensholder();
+if (lensholder_enable && show) translate([19, 30, thickness+2]) lensholder();
