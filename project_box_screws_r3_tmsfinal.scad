@@ -6,21 +6,21 @@ $fn=50;
 // The box provides holes for LEN lenses from Alliexpress: https://www.aliexpress.com/item/32978356485.html?spm=a2g0s.9042311.0.0.66e04c4dbgmVUf
 show = 0;
 box_enable = 1;
-top_enable = 0;
-ledmount_enable = 1;
+top_enable = 1;
+ledmount_enable = 0;
 fillets_enable = 1;
 fillets_esp_enable = 0;
 lightsensor_enable = 1;
-words_enable = 0;
-lensholder_enable = 1;
+words_enable = 1;
+lensholder_enable = 0;
 
 //40mm x 60 board size
 
 inside_width = 70;
-//inside_length = 165;
-inside_length = 140;
-//inside_height = 60;
-inside_height = 0;
+inside_length = 165;
+//inside_length = 140;
+inside_height = 60;
+//inside_height = 0;
 //Wall thickness
 thickness = 3;  
 //Fillet radius. This should not be larger than thickness.
@@ -71,7 +71,7 @@ led_spacing=ledmount_spacing;
 //lightsensor_holesize=17;
 lightsensor_holesize=0;
 
-power_holesize=18;
+power_holesize=12;
 //power_holesize=0;
 
 screwmount_height = ledmount_screwmount_height+18;
@@ -89,7 +89,7 @@ screwmount_height_esp = screwmount_height+7;
 
 screwmount_length_lh = lensholder_length - 56;
 screwmount_width_lh = lensholder_width - 10;
-screwmount_height_lh = 4;
+screwmount_height_lh = 4.25;
 
 outside_width = inside_width + thickness * 2;
 outside_length = inside_length + thickness * 2;
@@ -240,10 +240,10 @@ module main_box(){
         }
         if (words_enable)
         {
-            translate ([inside_width/6,25,thickness/3]) 
+            translate ([inside_width/3,25,thickness/3]) 
                 rotate([180,0,0])
                 linear_extrude(thickness/3)
-                text("Hydrocut", size=10);
+                text("Trail", size=10);
             translate ([inside_width/4,inside_length-10,thickness/3]) 
                 rotate([180,0,0])
                 linear_extrude(thickness/3)
@@ -252,7 +252,7 @@ module main_box(){
     }
 
     translate([inside_width/2-11,led_offset-10, thickness]) filletposts();
-    //translate([inside_width/2-18,led_offset-22, thickness]) filletpostsesp();
+    translate([inside_width/2-18,led_offset-22, thickness]) filletpostsesp();
     translate([inside_width/2-11,led_offset+13, thickness]) filletpostslensholder();
 
     od = screw_dia * 2.5;
