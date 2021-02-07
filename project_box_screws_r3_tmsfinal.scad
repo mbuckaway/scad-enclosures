@@ -4,10 +4,10 @@ $fn=50;
 // a power cable hole, and place to mount the ESP32 board. The top panel screws to the
 // base for security and provide mounting holes for the entire box.
 // The box provides holes for LEN lenses from Alliexpress: https://www.aliexpress.com/item/32978356485.html?spm=a2g0s.9042311.0.0.66e04c4dbgmVUf
-show = 0;
+show = 1;
 box_enable = 1;
 top_enable = 1;
-ledmount_enable = 0;
+ledmount_enable = 1;
 fillets_enable = 1;
 fillets_esp_enable = 0;
 lightsensor_enable = 1;
@@ -408,7 +408,7 @@ module lensholder(){
 if (box_enable) main_box();
 if (top_enable) translate([-outside_width-5,0,0]) lid();
 //if (ledmount_enable) translate([-outside_width*1.75,0,0]) ledmount();
-if (ledmount_enable && !show) translate([-50,0,0]) ledmount();
+if (ledmount_enable && !show) translate([-150,0,0]) ledmount();
 //if (ledmount_enable && show) translate([19,30,0]) ledmount();
 if (ledmount_enable && show) translate([19,30,screwmount_height_esp-6]) ledmount();
 if (lensholder_enable && !show) translate([-100, 0, 0]) lensholder();

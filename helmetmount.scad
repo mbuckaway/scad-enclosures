@@ -10,18 +10,20 @@ inside_height = 2;
 space_width = 14;
 
 clamp_offset = 60;
+clamp_dia = 31.8;
+//clamp_dia = 35;
 
 
 // Enables the light mount
-lightmount_enabled = 1;
+lightmount_enabled = 0;
 // Use the gopro mount or the tab mount - 1 = gopro
 gopro_tab_enabled = 1;
 // Handlebar clamp mount
 clamp_enabled = 1;
 // Helmet platform mount
-helmet_platform_enable = 1;
+helmet_platform_enable = 0;
 // Serfas Light mount
-serfas_light_mount = 1;
+serfas_light_mount = 0;
 
 module rounded_box(x,y,z,r){
     translate([r,r,r])
@@ -80,14 +82,14 @@ if (clamp_enabled)
 {
     translate([clamp_offset,0,0])
     gopro_bar_clamp(
-        rod_d= 35, // rod diameter
-        th= 3.2, // main thickness
+        rod_d= clamp_dia, // rod diameter
+        th= 5.0, // main thickness
         gap= 2.4, // space between the clamps
-        screw_d= 4, // screw diameter
-        screw_head_d= 6.2, // screw head diameter
-        screw_nut_d= 6.01, // nut diameter from corner to corner
-        screw_shoulder_th=4.5, // thickness of the shoulder on which the nut clamps
-        screw_reversed=false	 // true to mirror the orientation of the clamp bolts
+        screw_d= 4.25, // screw diameter
+        screw_head_d= 8.2, // screw head diameter
+        screw_nut_d= 8.01, // nut diameter from corner to corner
+        screw_shoulder_th=5.5, // thickness of the shoulder on which the nut clamps
+        screw_reversed=0	 // true to mirror the orientation of the clamp bolts
     );
 
     translate([clamp_offset,0,0]) gopro_connector("triple");
