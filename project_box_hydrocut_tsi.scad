@@ -44,6 +44,8 @@ od = screw_dia * 2.5;
 //lightsensor_holesize=17;
 lightsensor_holesize=0;
 led_holesize=0;
+led_offset=45;
+led_spacing=26;
 
 //power_holesize=12;
 power_holesize=0;
@@ -68,6 +70,34 @@ module textlines(line1, line2)
                 rotate([180,0,0])
                 linear_extrude(thickness+10)
                 text(line2, size=8, halign="center", font="Liberation Sans:style=Bold");
+}
+
+module filletpostsesp()
+{
+    postoffset_length = screwmount_length_esp;
+    postoffset_width = screwmount_width_esp;
+    post1 = [0, 0, 0];
+    post2 = [0, postoffset_length, 0];
+    post3 = [postoffset_width, 0, 0];
+    post4 = [postoffset_width, postoffset_length, 0];
+    translate(post1) screwmount(screwmount_height_esp, screwmount_screw_dia, 4, 1);
+    translate(post2) screwmount(screwmount_height_esp, screwmount_screw_dia, 4, 1);
+    translate(post3) screwmount(screwmount_height_esp, screwmount_screw_dia, 4, 1);
+    translate(post4) screwmount(screwmount_height_esp, screwmount_screw_dia, 4, 1);
+}
+
+module filletpostslensholder()
+{
+    postoffset_length = screwmount_length_lh;
+    postoffset_width = screwmount_width_lh;
+    post1 = [0, 0, 0];
+    post2 = [0, postoffset_length, 0];
+    post3 = [postoffset_width, 0, 0];
+    post4 = [postoffset_width, postoffset_length, 0];
+    translate(post1) screwmount(screwmount_height_lh, screwmount_screw_dia, 3, 0);
+    translate(post2) screwmount(screwmount_height_lh, screwmount_screw_dia, 3, 0);
+    translate(post3) screwmount(screwmount_height_lh, screwmount_screw_dia, 3, 0);
+    translate(post4) screwmount(screwmount_height_lh, screwmount_screw_dia, 3, 0);
 }
 
 module main_box(){
@@ -134,7 +164,7 @@ module main_box(){
             translate([inside_width/2, 70, 0]) textlines("Glasgow", "Open");
             translate([inside_width/2, 110, 0]) textlines("Synders", "Open");
             translate([inside_width/2, 150, 0]) textlines("All Trails", "Open");
-            translate
+            //translate
         }
     }
 
