@@ -2,9 +2,10 @@ $fn=50;
 //Procedural Project Box Screws
 
 box_enable = 1;
-top_enable = 0;
+top_enable = 1;
 lightsensor_enable = 1;
-branket_enable = 0;
+bracket_enable = 0;
+plate_enable = 0;
 
 text_enable_box = 1;
 //40mm x 60 board size
@@ -17,7 +18,7 @@ thickness = 2.5;
 //Fillet radius. This should not be larger than thickness.
 radius = 2;                     
 //Diameter of the holes that screws thread into. 
-screw_dia = 3.0;                  
+screw_dia = 3.15;                  
 //Diameter of the holes on the lid (should be larger than the diameter of your screws)
 screw_loose_dia = 3.5;
 //Only use this if the lip on your lid is detached from the lid! This is a hack to work around odd union() behaviour.
@@ -33,7 +34,7 @@ lid_screw_lip_screw_size = 5;
 antenna_holesize=0;
 antenna_offset=7;
 
-led_holesize=4.9;
+led_holesize=5.1;
 led_offset=inside_length/4;
 led_spacing=10;
 led_count = 2;
@@ -44,11 +45,11 @@ top_holeoffset = 5;
 bottom_holesize=0;
 
 screwmount_height = 12;
-screwmount_length = 65;
+screwmount_length = 68;
 screwmount_width = 40;
 screwmount_offset_x = 12;
 screwmount_offset_y = inside_length/4;
-screwmount_screw_dia = 1.75;
+screwmount_screw_dia = 1.4;
 
 outside_width = inside_width + thickness * 2;
 outside_length = inside_length + thickness * 2;
@@ -85,6 +86,13 @@ module filletposts()
     translate(post2) screwmount();
     translate(post3) screwmount();
     translate(post4) screwmount();
+}
+
+module BMP280_sensor()
+{
+    translate([0, 0, -thickness/2]) cube([15.5, 2.8, thickness*2]);
+    translate([2.5, 9.5, -thickness/2]) cylinder(d=screw_dia, h=thickness*3);
+    translate([13, 9.5, -thickness/2]) cylinder(d=screw_dia, h=thickness*3);
 }
 
 module box_screw(id, od, height){
@@ -189,14 +197,14 @@ module main_box(){
                 text("Station", size=8);
         }
 
-        for(x=[1:15])
+        for(x=[1:13])
         {
             for(y=[1:6])
             {
-                translate([(5*x)+2, inside_length+thickness, 5*y]) rotate([90, 0, 0]) cylinder(d=2.5, h=thickness*3, center=true);
+                translate([(5*x)+7, inside_length+thickness, 5*y+4]) rotate([90, 0, 0]) cylinder(d=2.5, h=thickness*3, center=true);
             }
         }
-        for (y=[0:20:40])
+        for (y=[0:25:50])
         {
             translate([inside_width, inside_length/4+y, inside_height/2]) plug_hole();
         }
@@ -223,7 +231,7 @@ module main_box(){
     difference()
     {
         translate([thickness, inside_length-30, thickness]) cube([inside_width, thickness, inside_height]);
-        translate([inside_width/2-thickness, inside_length-26, inside_height-10])  rotate([90, 0, 0]) cube([15, 2.5, thickness+3]);
+        translate([inside_width/2-thickness-2, inside_length-27, inside_height-15]) rotate([90, 0, 0]) BMP280_sensor();
     }
     translate([screwmount_offset_x,screwmount_offset_y, thickness]) filletposts();
 }
@@ -299,7 +307,7 @@ module lid(){
 
 module bracket()
 {
-    bracket_width = 21;
+    bracket_width = 19.5;
     screwhole_offset = 12;
     difference()
     {
@@ -312,8 +320,8 @@ module bracket()
         difference()
         {
             cube([bracket_width, 40, thickness*2]);
-            translate([bracket_width/2, screwhole_offset+5,  -2]) cylinder(d=screw_dia, h=thickness*3);
-            translate([bracket_width/2, screwhole_offset+19.05, -2]) cylinder(d=screw_dia, h=thickness*3);
+            translate([bracket_width/2, screwhole_offset+5,  -2]) cylinder(d=lid_screw_lip_screw_size, h=thickness*3);
+            translate([bracket_width/2, screwhole_offset+19.05, -2]) cylinder(d=lid_screw_lip_screw_size, h=thickness*3);
         }
     }
     difference()
@@ -328,6 +336,19 @@ module bracket()
     }
 }
 
+module plate()
+{
+    bracket_width = 19.5;
+    screwhole_offset = 12;
+    difference()
+    {
+        cube([bracket_width, 40, thickness]);
+        translate([bracket_width/2, screwhole_offset,  -2]) cylinder(d=screw_dia+1, h=thickness*3);
+        translate([bracket_width/2, screwhole_offset+19.05, -2]) cylinder(d=screw_dia+1, h=thickness*3);
+    }
+}
+
 if (box_enable) main_box();
 if (top_enable) translate([-outside_width-5,0,0]) lid();
-if (branket_enable) translate([-outside_width-50, 0, 0]) bracket();
+if (bracket_enable) translate([-outside_width-50, 0, 0]) bracket();
+if (plate_enable) translate([-outside_width-90, 0, 0]) plate();
