@@ -1,11 +1,11 @@
 $fn=50;
 //Procedural Project Box Screws
 
-box_enable = 1;
-top_enable = 1;
+box_enable = 0;
+top_enable = 0;
 lightsensor_enable = 1;
 bracket_enable = 0;
-plate_enable = 0;
+plate_enable = 1;
 
 text_enable_box = 1;
 //40mm x 60 board size
