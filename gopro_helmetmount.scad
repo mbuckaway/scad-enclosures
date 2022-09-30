@@ -17,7 +17,7 @@ clamp_dia = 35;
 // Enables the light mount
 lightmount_enabled = 0;
 // Use the gopro mount or the tab mount - 1 = gopro
-gopro_tab_enabled = 1;
+gopro_tab_enabled = 0;
 // Handlebar clamp mount
 clamp_enabled = 0;
 // Helmet platform mount
@@ -116,11 +116,11 @@ if (serfas_light_mount)
     {
         difference()
         {
-            rounded_box(25, 23, 8, 2);
-            translate ([5, 3, 3]) cube([15, 23, 5]);
-            translate ([3, 2, 3]) cube([20, 23, 2.7]);
+            rounded_box(26, 23, 8, 2);
+            translate ([5, 3, 3]) cube([15.5, 23, 5]);
+            translate ([2.5, 2, 3]) cube([20.5, 23, 2.7]);
         }
-        translate([9.5, 17, 2.0]) rotate([0,90,0]) cylinder(h=6,d=3);
+        translate([9.5, 17, 2.0]) rotate([0,90,0]) cylinder(h=6,d=2.5);
         translate([12.5, 11.5,-10]) rotate([90,0,90]) gopro_connector("double");
     }
 }

@@ -54,7 +54,7 @@ gopro_nut_d= 9.2;
 // How deep is this nut embossing (keep it small to avoid over-overhangs)
 gopro_nut_h= 2;
 // Hole diameter for the two-arm mount part
-gopro_holed_two= 5;
+gopro_holed_two= 5.5;
 // Hole diameter for the three-arm mount part
 gopro_holed_three= 5.5;
 // Thickness of the internal arm in the 3-arm mount part
